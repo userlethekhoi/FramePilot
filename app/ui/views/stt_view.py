@@ -76,7 +76,7 @@ class SpeechToTextView(QFrame):
         self._media_path_input.setPlaceholderText("Select video or audio file path (.wav, .mp3, .mp4, .mkv)...")
         file_layout.addWidget(self._media_path_input, stretch=1)
 
-        self._media_browse_btn = QPushButton("Browse")
+        self._media_browse_btn = QPushButton(tr("stt.browse"))
         self._media_browse_btn.clicked.connect(self._on_media_browse_clicked)
         file_layout.addWidget(self._media_browse_btn)
         layout.addWidget(file_container)
@@ -150,7 +150,7 @@ class SpeechToTextView(QFrame):
         layout.addWidget(action_container)
 
         # 4. Transcribed output log
-        out_lbl = QLabel("Transcription Output Log")
+        out_lbl = QLabel(tr("stt.out_lbl"))
         out_lbl.setStyleSheet("font-size: 13px; font-weight: bold;")
         layout.addWidget(out_lbl)
 
@@ -162,7 +162,7 @@ class SpeechToTextView(QFrame):
         )
         layout.addWidget(self._transcribe_output_text, stretch=1)
 
-        self._tabs.addTab(tab, "1. Transcription (STT)")
+        self._tabs.addTab(tab, tr("stt.tab1"))
 
     def _setup_translation_dub_tab(self) -> None:
         """Sets up the Subtitle Translation and TTS voice synthesis tab."""
@@ -184,7 +184,7 @@ class SpeechToTextView(QFrame):
         self._sub_path_input.setPlaceholderText("Select source subtitle file (.srt, .vtt)...")
         file_layout.addWidget(self._sub_path_input, stretch=1)
 
-        self._sub_browse_btn = QPushButton("Browse")
+        self._sub_browse_btn = QPushButton(tr("stt.browse"))
         self._sub_browse_btn.clicked.connect(self._on_sub_browse_clicked)
         file_layout.addWidget(self._sub_browse_btn)
         layout.addWidget(file_container)
@@ -285,7 +285,7 @@ class SpeechToTextView(QFrame):
         )
         layout.addWidget(self._dub_output_text, stretch=1)
 
-        self._tabs.addTab(tab, "2. Translation & Dubbing (TTS)")
+        self._tabs.addTab(tab, tr("stt.tab2"))
 
     def _on_media_browse_clicked(self) -> None:
         file_path, _ = QFileDialog.getOpenFileName(

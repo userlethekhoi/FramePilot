@@ -39,6 +39,10 @@ class TranslationManager:
             
             # STT View
             "stt.title": "Speech to Text & Transcription",
+            "stt.tab1": "1. Transcription (STT)",
+            "stt.tab2": "2. Translation & Dubbing (TTS)",
+            "stt.browse": "Browse",
+            "stt.out_lbl": "Transcription Output Log",
             "stt.file_lbl": "Media File:",
             "stt.provider_lbl": "Provider:",
             "stt.model_lbl": "Model:",
@@ -112,6 +116,10 @@ class TranslationManager:
             
             # STT View
             "stt.title": "Nhận dạng giọng nói & Phụ đề",
+            "stt.tab1": "1. Tạo Phụ đề (STT)",
+            "stt.tab2": "2. Dịch thuật & Lồng tiếng (TTS)",
+            "stt.browse": "Chọn tệp",
+            "stt.out_lbl": "Nhật ký Đầu ra Phụ đề",
             "stt.file_lbl": "Tệp tin nguồn:",
             "stt.provider_lbl": "Nhà cung cấp:",
             "stt.model_lbl": "Mô hình:",
