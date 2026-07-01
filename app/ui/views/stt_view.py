@@ -328,7 +328,6 @@ class SpeechToTextView(QFrame):
 
         options: dict[str, Any] = {
             "provider": provider,
-            "mock": True,
         }
 
         if provider == "whisper":
