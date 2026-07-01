@@ -19,11 +19,13 @@ from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.ui.viewmodels.enhancement_viewmodel import EnhancementViewModel
 from app.ui.viewmodels.workflow_viewmodel import WorkflowViewModel
 from app.ui.viewmodels.settings_viewmodel import SettingsViewModel
+from app.ui.viewmodels.projects_viewmodel import ProjectsViewModel
 from app.ui.views.downloader_view import DownloaderView
 from app.ui.views.stt_view import SpeechToTextView
 from app.ui.views.enhancement_view import EnhancementView
 from app.ui.views.workflow_view import WorkflowView
 from app.ui.views.settings_view import SettingsView
+from app.ui.views.projects_view import ProjectsView
 
 
 class NavigationSidebar(QFrame):
@@ -113,7 +115,8 @@ class MainWindow(QMainWindow):
     def _init_pages(self) -> None:
         """Initializes navigation pages."""
         # Page 0: Projects Dashboard
-        self._projects_page = self._create_page("Projects Dashboard (Select / Create Workspace)")
+        projects_vm = self._container.resolve(ProjectsViewModel)
+        self._projects_page = ProjectsView(projects_vm)
         self._content_stack.addWidget(self._projects_page)
 
         # Page 1: Video/Image Downloader

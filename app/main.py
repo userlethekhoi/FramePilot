@@ -41,6 +41,8 @@ from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.application.services.workflow_engine import WorkflowEngine
 from app.ui.viewmodels.workflow_viewmodel import WorkflowViewModel
 from app.ui.viewmodels.settings_viewmodel import SettingsViewModel
+from app.application.services.project_service import ProjectService
+from app.ui.viewmodels.projects_viewmodel import ProjectsViewModel
 from app.ui.views.main_window import MainWindow
 
 
@@ -106,6 +108,12 @@ def main() -> None:
     max_threads = settings_manager.get("performance.max_worker_threads", 4)
     job_queue = JobQueueManager(max_threads)
     container.register_singleton(JobQueueManager, job_queue)
+
+    project_service = ProjectService(project_repo)
+    container.register_singleton(ProjectService, project_service)
+
+    projects_viewmodel = ProjectsViewModel(project_service)
+    container.register_singleton(ProjectsViewModel, projects_viewmodel)
 
     # Register Downloader components
     downloader = YtDlpDownloader()
