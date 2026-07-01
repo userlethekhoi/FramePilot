@@ -1,5 +1,13 @@
 import asyncio
 import sys
+import io
+
+# Redirect stdout/stderr if None (fixes PyInstaller windowed mode crashes with torch/whisper)
+if sys.stdout is None:
+    sys.stdout = io.StringIO()
+if sys.stderr is None:
+    sys.stderr = io.StringIO()
+
 import aiosqlite
 
 from loguru import logger
