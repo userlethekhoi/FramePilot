@@ -51,6 +51,7 @@ def test_settings_viewmodel_integration(settings_manager: SettingsManager) -> No
 
     # Initial states check
     assert vm.theme_mode == "dark"
+    assert vm.language == "en"
     assert vm.storage_dir == "storage"
     assert vm.gpu_acceleration is False
 
@@ -60,6 +61,7 @@ def test_settings_viewmodel_integration(settings_manager: SettingsManager) -> No
 
     vm.save_settings(
         theme="light",
+        language="vi",
         storage="storage/new_custom",
         openai_key="sk-testkey123",
         deepseek_key="ds-testkey456",
@@ -68,6 +70,7 @@ def test_settings_viewmodel_integration(settings_manager: SettingsManager) -> No
 
     # Assert values saved in vm
     assert vm.theme_mode == "light"
+    assert vm.language == "vi"
     assert vm.storage_dir == "storage/new_custom"
     assert vm.openai_api_key == "sk-testkey123"
     assert vm.deepseek_api_key == "ds-testkey456"

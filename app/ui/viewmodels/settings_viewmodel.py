@@ -33,25 +33,31 @@ class SettingsViewModel(QObject):
         return str(self._settings.get("api.deepseek_key", ""))
 
     @property
+    def language(self) -> str:
+        return str(self._settings.get("app.language", "en"))
+
+    @property
     def gpu_acceleration(self) -> bool:
         return bool(self._settings.get("hardware.gpu_acceleration", False))
 
-    @Slot(str, str, str, str, bool)
+    @Slot(str, str, str, str, str, bool)
     def save_settings(
         self,
         theme: str,
+        language: str,
         storage: str,
         openai_key: str,
         deepseek_key: str,
         gpu_accel: bool,
     ) -> None:
         """Saves updated settings in memory and writes back to config.yaml."""
-        logger.info("Saving settings: theme={}, storage={}, gpu={}", theme, storage, gpu_accel)
+        logger.info("Saving settings: theme={}, language={}, storage={}, gpu={}", theme, language, storage, gpu_accel)
 
         # Detect if theme has changed to trigger stylesheet reload
         old_theme = self.theme_mode
         
         self._settings.set("theme.mode", theme)
+        self._settings.set("app.language", language)
         self._settings.set("paths.storage_dir", storage)
         self._settings.set("api.openai_key", openai_key)
         self._settings.set("api.deepseek_key", deepseek_key)

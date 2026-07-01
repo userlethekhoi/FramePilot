@@ -46,6 +46,12 @@ class SettingsView(QFrame):
         self._theme_combo.setCurrentText(self._vm.theme_mode)
         self._form_layout.addRow("Application Theme:", self._theme_combo)
 
+        # 1.5. Language Configuration
+        self._lang_combo = QComboBox()
+        self._lang_combo.addItems(["en", "vi"])
+        self._lang_combo.setCurrentText(self._vm.language)
+        self._form_layout.addRow("Application Language:", self._lang_combo)
+
         # 2. Storage Directory picker
         self._storage_container = QWidget()
         self._storage_layout = QHBoxLayout(self._storage_container)
@@ -139,12 +145,13 @@ class SettingsView(QFrame):
 
     def _on_save_clicked(self) -> None:
         theme = self._theme_combo.currentText()
+        lang = self._lang_combo.currentText()
         storage = self._storage_input.text().strip()
         openai_key = self._openai_input.text().strip()
         deepseek_key = self._deepseek_input.text().strip()
         gpu_accel = self._gpu_checkbox.isChecked()
 
         # Update and save settings in database/yaml
-        self._vm.save_settings(theme, storage, openai_key, deepseek_key, gpu_accel)
+        self._vm.save_settings(theme, lang, storage, openai_key, deepseek_key, gpu_accel)
         
         self._status_label.setText("Configuration saved successfully!")
