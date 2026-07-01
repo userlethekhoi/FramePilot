@@ -39,6 +39,7 @@ from app.ui.viewmodels.enhancement_viewmodel import EnhancementViewModel
 from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.application.services.workflow_engine import WorkflowEngine
 from app.ui.viewmodels.workflow_viewmodel import WorkflowViewModel
+from app.ui.viewmodels.settings_viewmodel import SettingsViewModel
 from app.ui.views.main_window import MainWindow
 
 
@@ -178,6 +179,9 @@ def main() -> None:
     theme_mode = settings_manager.get("theme.mode", "dark")
     theme_engine = ThemeEngine(theme_mode)
     container.register_singleton(ThemeEngine, theme_engine)
+
+    settings_viewmodel = SettingsViewModel(settings_manager, theme_engine)
+    container.register_singleton(SettingsViewModel, settings_viewmodel)
 
     # 6. Start Qt application loop
     app = QApplication(sys.argv)

@@ -39,3 +39,41 @@ def test_settings_load_invalid_file() -> None:
     """Verifies that loading a non-existent configuration path raises ConfigError."""
     with pytest.raises(ConfigError):
         SettingsManager("non_existent_file.yaml")
+
+
+def test_settings_viewmodel_integration(settings_manager: SettingsManager) -> None:
+    """Verifies SettingsViewModel maps properties and saves configs correctly."""
+    from app.ui.themes.engine import ThemeEngine
+    from app.ui.viewmodels.settings_viewmodel import SettingsViewModel
+
+    theme_engine = ThemeEngine("dark")
+    vm = SettingsViewModel(settings_manager, theme_engine)
+
+    # Initial states check
+    assert vm.theme_mode == "dark"
+    assert vm.storage_dir == "storage"
+    assert vm.gpu_acceleration is False
+
+    # Save new settings
+    signals_received = []
+    vm.theme_changed.connect(lambda t: signals_received.append(t))
+
+    vm.save_settings(
+        theme="light",
+        storage="storage/new_custom",
+        openai_key="sk-testkey123",
+        deepseek_key="ds-testkey456",
+        gpu_accel=True,
+    )
+
+    # Assert values saved in vm
+    assert vm.theme_mode == "light"
+    assert vm.storage_dir == "storage/new_custom"
+    assert vm.openai_api_key == "sk-testkey123"
+    assert vm.deepseek_api_key == "ds-testkey456"
+    assert vm.gpu_acceleration is True
+
+    # Assert signal was triggered
+    assert len(signals_received) == 1
+    assert signals_received[0] == "light"
+

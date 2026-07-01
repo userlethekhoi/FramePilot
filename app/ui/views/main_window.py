@@ -18,10 +18,12 @@ from app.ui.viewmodels.downloader_viewmodel import DownloaderViewModel
 from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.ui.viewmodels.enhancement_viewmodel import EnhancementViewModel
 from app.ui.viewmodels.workflow_viewmodel import WorkflowViewModel
+from app.ui.viewmodels.settings_viewmodel import SettingsViewModel
 from app.ui.views.downloader_view import DownloaderView
 from app.ui.views.stt_view import SpeechToTextView
 from app.ui.views.enhancement_view import EnhancementView
 from app.ui.views.workflow_view import WorkflowView
+from app.ui.views.settings_view import SettingsView
 
 
 class NavigationSidebar(QFrame):
@@ -135,9 +137,8 @@ class MainWindow(QMainWindow):
         self._content_stack.addWidget(self._workflows_page)
 
         # Page 5: Settings Page
-        self._settings_page = self._create_page(
-            "Global Settings (Themes, API Keys, GPU acceleration)"
-        )
+        settings_vm = self._container.resolve(SettingsViewModel)
+        self._settings_page = SettingsView(settings_vm)
         self._content_stack.addWidget(self._settings_page)
 
     def _create_page(self, title_text: str) -> QWidget:
