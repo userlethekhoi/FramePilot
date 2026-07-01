@@ -37,6 +37,8 @@ from app.modules.enhancement.enhancement_hub import EnhancementHub
 from app.application.services.enhancement_service import EnhancementService
 from app.ui.viewmodels.enhancement_viewmodel import EnhancementViewModel
 from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
+from app.application.services.workflow_engine import WorkflowEngine
+from app.ui.viewmodels.workflow_viewmodel import WorkflowViewModel
 from app.ui.views.main_window import MainWindow
 
 
@@ -154,6 +156,23 @@ def main() -> None:
 
     enhancement_viewmodel = EnhancementViewModel(enhancement_service)
     container.register_singleton(EnhancementViewModel, enhancement_viewmodel)
+
+    # Register Workflow components
+    workflow_engine = WorkflowEngine(
+        download_service,
+        stt_service,
+        translation_service,
+        tts_service,
+        enhancement_service,
+        asset_repo,
+        job_repo,
+        job_queue,
+        settings_manager,
+    )
+    container.register_singleton(WorkflowEngine, workflow_engine)
+
+    workflow_viewmodel = WorkflowViewModel(workflow_engine)
+    container.register_singleton(WorkflowViewModel, workflow_viewmodel)
 
     # 5. Initialize UI Theme engine
     theme_mode = settings_manager.get("theme.mode", "dark")
