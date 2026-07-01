@@ -32,6 +32,7 @@ class YtDlpDownloader(BaseDownloader):
             "no_warnings": True,
             "skip_download": True,
             "extract_flat": "in_playlist",
+            "cookiesfrombrowser": ("chrome",),
         }
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -40,8 +41,11 @@ class YtDlpDownloader(BaseDownloader):
                     raise ServiceError("Failed to extract info: yt-dlp returned empty metadata.")
                 return info  # type: ignore[no-any-return]
         except Exception as e:
+            error_msg = str(e)
+            if "database is locked" in error_msg.lower() or "permission denied" in error_msg.lower() or "dpapi" in error_msg.lower():
+                error_msg = "Trình duyệt Chrome đang mở và khóa cookie. Vui lòng đóng hoàn toàn trình duyệt Chrome (tắt cả dưới khay hệ thống) rồi thử lại, hoặc dùng trình duyệt khác."
             logger.error("yt-dlp metadata extraction failed for URL {}: {}", url, e)
-            raise ServiceError(f"Metadata extraction failed: {e}") from e
+            raise ServiceError(f"Metadata extraction failed: {error_msg}") from e
 
     async def download(
         self,
@@ -134,6 +138,7 @@ class YtDlpDownloader(BaseDownloader):
             "no_warnings": True,
             "ffmpeg_location": imageio_ffmpeg.get_ffmpeg_exe(),
             "noplaylist": True,
+            "cookiesfrombrowser": ("chrome",),
         }
 
         # Resolve format configurations based on user options
@@ -190,5 +195,8 @@ class YtDlpDownloader(BaseDownloader):
                     file_size=info.get("filesize") or info.get("filesize_approx") or 0,
                 )
         except Exception as e:
+            error_msg = str(e)
+            if "database is locked" in error_msg.lower() or "permission denied" in error_msg.lower() or "dpapi" in error_msg.lower():
+                error_msg = "Trình duyệt Chrome đang mở và khóa cookie. Vui lòng đóng hoàn toàn trình duyệt Chrome (tắt cả dưới khay hệ thống) rồi thử lại."
             logger.error("Download failed for URL {}: {}", url, e)
-            return DownloadResult(success=False, error_message=str(e))
+            return DownloadResult(success=False, error_message=error_msg)

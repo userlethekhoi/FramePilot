@@ -68,10 +68,34 @@ def main() -> None:
     # 1. Initialize Dependency Injection Container
     container = Container()
 
-    # 2. Load settings manager
+    # 2. Load settings manager from APPDATA
+    import os
+    from pathlib import Path
+    app_data_dir = Path(os.getenv("APPDATA", str(Path.home()))) / "FramePilot"
+    app_data_dir.mkdir(parents=True, exist_ok=True)
+    config_path = app_data_dir / "config.yaml"
+    
+    if not config_path.exists():
+        import shutil
+        if Path("config.yaml").exists():
+            shutil.copy("config.yaml", config_path)
+            
     try:
-        settings_manager = SettingsManager("config.yaml")
-    except Exception:
+        settings_manager = SettingsManager(str(config_path))
+        # Ensure database is in APPDATA
+        db_path = app_data_dir / "mediaflow.db"
+        if "sqlite+aiosqlite:///" in settings_manager.get("database.url", "") or not settings_manager.get("database.url"):
+            settings_manager.set("database.url", f"sqlite+aiosqlite:///{db_path}")
+            
+        # Ensure storage_dir is in the user's Downloads folder so they can easily find their videos
+        downloads_dir = Path.home() / "Downloads" / "FramePilot"
+        if not settings_manager.get("paths.storage_dir") or settings_manager.get("paths.storage_dir") == "storage":
+            settings_manager.set("paths.storage_dir", str(downloads_dir))
+            
+        settings_manager.save()
+            
+    except Exception as e:
+        logger.error(f"Failed to load settings: {e}")
         sys.exit(1)
 
     container.register_singleton(SettingsManager, settings_manager)
