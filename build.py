@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -26,12 +27,13 @@ def compile_app() -> None:
     print(f"Target entrypoint: {entry_point}")
     
     # 2. Build pyinstaller command parameters
-    # Collect static folders like app/ui/themes, config.yaml
     cmd = [
-        "pyinstaller",
+        sys.executable,
+        "-m",
+        "PyInstaller",
         "--noconfirm",
         "--onedir",
-        "--windowed",
+        "--windowed",  # Windowed mode for production deployment
         f"--name=FramePilot",
         # Add static resources
         f"--add-data={root_dir / 'config.yaml'}{os.pathsep}.",
@@ -44,6 +46,8 @@ def compile_app() -> None:
     
     try:
         subprocess.run(cmd, check=True)
+        # Copy config.yaml next to FramePilot.exe
+        shutil.copy2(root_dir / "config.yaml", root_dir / "dist" / "FramePilot" / "config.yaml")
         print("\n=== SUCCESS ===")
         print("Application packaged successfully!")
         print(f"Executable folder exported to: {root_dir / 'dist' / 'FramePilot'}")

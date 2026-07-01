@@ -1,5 +1,6 @@
 import asyncio
 import sys
+import aiosqlite
 
 from loguru import logger
 from PySide6.QtWidgets import QApplication
