@@ -16,6 +16,7 @@ from app.core.interfaces.repository import (
     ProjectRepository,
 )
 from app.infrastructure.config.settings import SettingsManager
+from app.infrastructure.config.translation import TranslationManager
 from app.infrastructure.database.connection import DatabaseEngine
 from app.infrastructure.database.models import Base
 from app.infrastructure.database.repositories import (
@@ -81,6 +82,8 @@ def main() -> None:
         retention=retention,
         compression=compression,
     )
+    # 3.5. Configure localization
+    TranslationManager.set_language(settings_manager.get("app.language", "en"))
     logger.info("Starting MediaFlow AI bootstrap...")
 
     # 4. Configure Database engine and repositories

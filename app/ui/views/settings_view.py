@@ -1,5 +1,6 @@
 from typing import Optional
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, QTimer
+from app.infrastructure.config.translation import tr
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -29,7 +30,7 @@ class SettingsView(QFrame):
         self._layout.setSpacing(20)
 
         # Header Title
-        self._title = QLabel("Global Settings & Configuration")
+        self._title = QLabel(tr("set.title"))
         self._title.setStyleSheet("font-size: 20px; font-weight: bold;")
         self._layout.addWidget(self._title)
 
@@ -44,13 +45,13 @@ class SettingsView(QFrame):
         self._theme_combo = QComboBox()
         self._theme_combo.addItems(["dark", "light"])
         self._theme_combo.setCurrentText(self._vm.theme_mode)
-        self._form_layout.addRow("Application Theme:", self._theme_combo)
+        self._form_layout.addRow(tr("set.theme"), self._theme_combo)
 
         # 1.5. Language Configuration
         self._lang_combo = QComboBox()
         self._lang_combo.addItems(["en", "vi"])
         self._lang_combo.setCurrentText(self._vm.language)
-        self._form_layout.addRow("Application Language:", self._lang_combo)
+        self._form_layout.addRow(tr("set.lang"), self._lang_combo)
 
         # 2. Storage Directory picker
         self._storage_container = QWidget()
@@ -62,11 +63,11 @@ class SettingsView(QFrame):
         self._storage_input.setText(self._vm.storage_dir)
         self._storage_layout.addWidget(self._storage_input, stretch=1)
 
-        self._storage_browse = QPushButton("Browse")
+        self._storage_browse = QPushButton(tr("proj.browse"))
         self._storage_browse.clicked.connect(self._on_browse_storage)
         self._storage_layout.addWidget(self._storage_browse)
 
-        self._form_layout.addRow("Storage Directory:", self._storage_container)
+        self._form_layout.addRow(tr("set.storage"), self._storage_container)
 
         # 3. OpenAI API Key Input (with EchoMode masking)
         self._openai_container = QWidget()
@@ -84,7 +85,7 @@ class SettingsView(QFrame):
         self._openai_toggle.clicked.connect(lambda: self._toggle_echo(self._openai_input, self._openai_toggle))
         self._openai_layout.addWidget(self._openai_toggle)
 
-        self._form_layout.addRow("OpenAI API Key:", self._openai_container)
+        self._form_layout.addRow(tr("set.openai"), self._openai_container)
 
         # 4. DeepSeek API Key Input
         self._deepseek_container = QWidget()
@@ -102,12 +103,12 @@ class SettingsView(QFrame):
         self._deepseek_toggle.clicked.connect(lambda: self._toggle_echo(self._deepseek_input, self._deepseek_toggle))
         self._deepseek_layout.addWidget(self._deepseek_toggle)
 
-        self._form_layout.addRow("DeepSeek API Key:", self._deepseek_container)
+        self._form_layout.addRow(tr("set.deepseek"), self._deepseek_container)
 
         # 5. GPU Acceleration flag checkbox
         self._gpu_checkbox = QCheckBox("Enable GPU Acceleration (CUDA / DirectML)")
         self._gpu_checkbox.setChecked(self._vm.gpu_acceleration)
-        self._form_layout.addRow("Hardware Acceleration:", self._gpu_checkbox)
+        self._form_layout.addRow(tr("set.gpu"), self._gpu_checkbox)
 
         self._layout.addWidget(self._form)
 
@@ -117,7 +118,7 @@ class SettingsView(QFrame):
         self._actions_layout.setContentsMargins(0, 10, 0, 0)
         self._actions_layout.setSpacing(16)
 
-        self._save_btn = QPushButton("Save Settings")
+        self._save_btn = QPushButton(tr("set.save_btn"))
         self._save_btn.setObjectName("primaryButton")
         self._save_btn.clicked.connect(self._on_save_clicked)
         self._actions_layout.addWidget(self._save_btn)
@@ -154,4 +155,6 @@ class SettingsView(QFrame):
         # Update and save settings in database/yaml
         self._vm.save_settings(theme, lang, storage, openai_key, deepseek_key, gpu_accel)
         
-        self._status_label.setText("Configuration saved successfully!")
+        self._status_label.setText(tr("set.saved_msg"))
+        # Auto-disappear status label after 5 seconds (5000ms)
+        QTimer.singleShot(5000, lambda: self._status_label.clear())

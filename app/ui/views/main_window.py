@@ -1,5 +1,6 @@
 
 from loguru import logger
+from app.infrastructure.config.translation import tr
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import (
     QFrame,
@@ -52,12 +53,12 @@ class NavigationSidebar(QFrame):
     def _init_nav_buttons(self) -> None:
         # Core navigation views
         nav_items = [
-            ("Projects", 0),
-            ("Downloader", 1),
-            ("AI Transcribe", 2),
-            ("Enhancement", 3),
-            ("Workflows", 4),
-            ("Settings", 5),
+            (tr("nav.projects"), 0),
+            (tr("nav.downloader"), 1),
+            (tr("nav.transcribe"), 2),
+            (tr("nav.enhancer"), 3),
+            (tr("nav.workflow"), 4),
+            (tr("nav.settings"), 5),
         ]
 
         for label, idx in nav_items:
