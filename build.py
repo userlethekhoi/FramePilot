@@ -35,6 +35,7 @@ def compile_app() -> None:
         "--onedir",
         "--windowed",  # Windowed mode for production deployment
         f"--name=FramePilot",
+        "--collect-binaries=imageio_ffmpeg",
         # Add static resources
         f"--add-data={root_dir / 'config.yaml'}{os.pathsep}.",
         f"--add-data={root_dir / 'app' / 'ui' / 'themes'}{os.pathsep}app/ui/themes",

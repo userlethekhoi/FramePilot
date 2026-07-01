@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
 from loguru import logger
 from app.core.entities.workflow import Workflow, WorkflowNode, WorkflowEdge
 from app.ui.viewmodels.workflow_viewmodel import WorkflowViewModel
+from app.infrastructure.config.translation import tr
 
 
 class NodeGraphicsItem(QGraphicsItem):
@@ -185,7 +186,7 @@ class WorkflowView(QFrame):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(12)
 
-        self._run_btn = QPushButton("Run Workflow (DAG)")
+        self._run_btn = QPushButton(tr("wf.btn_run"))
         self._run_btn.setObjectName("primaryButton")
         self._run_btn.clicked.connect(self._on_run_clicked)
         layout.addWidget(self._run_btn)
@@ -193,16 +194,16 @@ class WorkflowView(QFrame):
         self._add_node_combo = QComboBox()
         self._add_node_combo.addItems([
             "-- Add Action Node --",
-            "Download Video",
-            "Transcribe Audio",
-            "Translate Subtitles",
-            "TTS Dubbing",
+            tr("wf.btn_dl"),
+            tr("wf.btn_stt"),
+            tr("wf.btn_trans"),
+            tr("wf.btn_tts"),
             "Enhance Quality",
         ])
         self._add_node_combo.currentIndexChanged.connect(self._on_add_node_selected)
         layout.addWidget(self._add_node_combo)
 
-        self._clear_btn = QPushButton("Clear Canvas")
+        self._clear_btn = QPushButton(tr("wf.btn_clear"))
         self._clear_btn.clicked.connect(self._on_clear_clicked)
         layout.addWidget(self._clear_btn)
 
@@ -348,7 +349,7 @@ class WorkflowView(QFrame):
 
         types = ["", "download", "transcribe", "translate", "tts", "enhance"]
         node_type = types[index]
-        titles = ["", "Download Video", "Transcribe Audio", "Translate Subtitles", "TTS Dubbing", "Enhance Quality"]
+        titles = ["", tr("wf.btn_dl"), tr("wf.btn_stt"), tr("wf.btn_trans"), tr("wf.btn_tts"), "Enhance Quality"]
         title = titles[index]
 
         nid = f"{node_type}_{str(uuid.uuid4())[:6]}"
@@ -375,7 +376,7 @@ class WorkflowView(QFrame):
         node_dl = WorkflowNode(
             id="node_dl",
             node_type="download",
-            title="Download Video",
+            title=tr("wf.btn_dl"),
             properties={"url": "https://youtube.com/watch?v=123", "quality": "highest"},
             x=50.0,
             y=150.0,
@@ -383,7 +384,7 @@ class WorkflowView(QFrame):
         node_stt = WorkflowNode(
             id="node_stt",
             node_type="transcribe",
-            title="Transcribe Audio",
+            title=tr("wf.btn_stt"),
             properties={"provider": "whisper", "mock": True},
             x=280.0,
             y=150.0,
@@ -391,7 +392,7 @@ class WorkflowView(QFrame):
         node_trans = WorkflowNode(
             id="node_trans",
             node_type="translate",
-            title="Translate Subtitles",
+            title=tr("wf.btn_trans"),
             properties={"provider": "google", "target_lang": "vi", "mock": True},
             x=510.0,
             y=150.0,
@@ -399,7 +400,7 @@ class WorkflowView(QFrame):
         node_tts = WorkflowNode(
             id="node_tts",
             node_type="tts",
-            title="Voice Dubbing",
+            title=tr("wf.btn_tts"),
             properties={"provider": "local", "voice_id": "alloy", "mock": True},
             x=740.0,
             y=150.0,

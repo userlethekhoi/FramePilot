@@ -34,6 +34,8 @@ class TranslationManager:
             "dl.url_lbl": "Video URL:",
             "dl.dest_lbl": "Output Folder:",
             "dl.start_btn": "Start Download",
+            "dl.format_lbl": "Format Preset:",
+            "dl.queue_lbl": "Active Download Queue",
             
             # STT View
             "stt.title": "Speech to Text & Transcription",
@@ -44,6 +46,13 @@ class TranslationManager:
             "stt.task_lbl": "Task:",
             "stt.format_lbl": "Output Format:",
             "stt.btn": "Transcribe File",
+            "stt.sub_lbl": "Subtitle File:",
+            "stt.trans_lbl": "Translator:",
+            "stt.target_lang_lbl": "Target Language:",
+            "stt.trans_btn": "Translate Subtitles",
+            "stt.tts_lbl": "TTS Engine:",
+            "stt.voice_lbl": "Voice:",
+            "stt.dub_btn": "Synthesize Dubbing",
             
             # Enhancer View
             "enh.title": "Quality Enhancement Center",
@@ -98,6 +107,8 @@ class TranslationManager:
             "dl.url_lbl": "Đường dẫn Video URL:",
             "dl.dest_lbl": "Thư mục Lưu trữ:",
             "dl.start_btn": "Bắt đầu Tải",
+            "dl.format_lbl": "Định dạng tải về:",
+            "dl.queue_lbl": "Danh sách Tải xuống đang chạy",
             
             # STT View
             "stt.title": "Nhận dạng giọng nói & Phụ đề",
@@ -108,6 +119,13 @@ class TranslationManager:
             "stt.task_lbl": "Nhiệm vụ:",
             "stt.format_lbl": "Định dạng đầu ra:",
             "stt.btn": "Bắt đầu tạo phụ đề",
+            "stt.sub_lbl": "Tệp tin Phụ đề:",
+            "stt.trans_lbl": "Trình Dịch thuật:",
+            "stt.target_lang_lbl": "Ngôn ngữ đích:",
+            "stt.trans_btn": "Dịch Phụ đề",
+            "stt.tts_lbl": "Công cụ Đọc (TTS):",
+            "stt.voice_lbl": "Giọng đọc:",
+            "stt.dub_btn": "Tạo Lồng tiếng",
             
             # Enhancer View
             "enh.title": "Trung tâm Nâng cao Chất lượng Video",

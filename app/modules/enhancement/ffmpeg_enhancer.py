@@ -4,6 +4,7 @@ import os
 import re
 import subprocess
 from typing import Any, Optional
+import imageio_ffmpeg
 from loguru import logger
 from app.core.exceptions import ServiceError
 from app.core.interfaces.enhancement import BaseEnhancer
@@ -29,7 +30,8 @@ class FfmpegEnhancer(BaseEnhancer):
             return await self._run_mock_enhance(input_path, output_path, progress_callback)
 
         # Build FFmpeg command based on task type
-        cmd = ["ffmpeg", "-y", "-i", input_path]
+        ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+        cmd = [ffmpeg_exe, "-y", "-i", input_path]
         filter_graphs = []
 
         if task_type == "upscale":
@@ -75,7 +77,8 @@ class FfmpegEnhancer(BaseEnhancer):
     async def _execute_ffmpeg(self, cmd: list[str], progress_callback: Optional[Callable[[float], None]], output_path: str) -> str:
         try:
             # First check if ffmpeg command exists
-            subprocess.run(["ffmpeg", "-version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+            subprocess.run([ffmpeg_exe, "-version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except FileNotFoundError:
             logger.warning("FFmpeg binary not found on local path. Running mock copy fallback.")
             return await self._run_mock_enhance(cmd[3], output_path, progress_callback)

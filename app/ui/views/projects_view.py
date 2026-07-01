@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from app.ui.viewmodels.projects_viewmodel import ProjectsViewModel
+from app.infrastructure.config.translation import tr
 
 
 class ProjectsView(QFrame):
@@ -29,7 +30,7 @@ class ProjectsView(QFrame):
         self._layout.setSpacing(20)
 
         # Welcome Title
-        self._title = QLabel("Welcome to FramePilot")
+        self._title = QLabel(tr("proj.welcome"))
         self._title.setStyleSheet("font-size: 22px; font-weight: bold; color: #FFFFFF;")
         self._layout.addWidget(self._title)
 
@@ -42,7 +43,7 @@ class ProjectsView(QFrame):
         status_layout = QHBoxLayout(self._status_banner)
         status_layout.setContentsMargins(12, 12, 12, 12)
         
-        self._status_lbl = QLabel(f"Active Workspace: {self._vm.active_project_name}")
+        self._status_lbl = QLabel(tr("proj.active_ws").format(self._vm.active_project_name))
         self._status_lbl.setStyleSheet("color: #10B981; font-weight: bold; font-size: 13px;")
         status_layout.addWidget(self._status_lbl)
         self._layout.addWidget(self._status_banner)
@@ -60,7 +61,7 @@ class ProjectsView(QFrame):
         create_layout.setContentsMargins(16, 16, 16, 16)
         create_layout.setSpacing(12)
 
-        create_title = QLabel("Create New Project")
+        create_title = QLabel(tr("proj.create_title"))
         create_title.setStyleSheet("font-size: 14px; font-weight: bold; color: #FFFFFF;")
         create_layout.addWidget(create_title)
 
@@ -71,7 +72,7 @@ class ProjectsView(QFrame):
 
         self._name_input = QLineEdit()
         self._name_input.setPlaceholderText("My awesome project...")
-        form_layout.addRow("Project Name:", self._name_input)
+        form_layout.addRow(tr("proj.name_label"), self._name_input)
 
         path_container = QWidget()
         path_layout = QHBoxLayout(path_container)
@@ -82,14 +83,14 @@ class ProjectsView(QFrame):
         self._path_input.setPlaceholderText("C:/Users/...")
         path_layout.addWidget(self._path_input, stretch=1)
 
-        browse_btn = QPushButton("Browse")
+        browse_btn = QPushButton(tr("proj.browse"))
         browse_btn.clicked.connect(self._on_browse_clicked)
         path_layout.addWidget(browse_btn)
 
-        form_layout.addRow("Project Path:", path_container)
+        form_layout.addRow(tr("proj.path_label"), path_container)
         create_layout.addWidget(form_widget)
 
-        self._create_btn = QPushButton("Create Workspace")
+        self._create_btn = QPushButton(tr("proj.create_btn"))
         self._create_btn.setObjectName("primaryButton")
         self._create_btn.clicked.connect(self._on_create_clicked)
         create_layout.addWidget(self._create_btn)
@@ -104,7 +105,7 @@ class ProjectsView(QFrame):
         recent_layout.setContentsMargins(16, 16, 16, 16)
         recent_layout.setSpacing(12)
 
-        recent_title = QLabel("Select Existing Workspace")
+        recent_title = QLabel(tr("proj.select_title"))
         recent_title.setStyleSheet("font-size: 14px; font-weight: bold; color: #FFFFFF;")
         recent_layout.addWidget(recent_title)
 
@@ -115,7 +116,7 @@ class ProjectsView(QFrame):
         self._list_widget.itemDoubleClicked.connect(self._on_item_double_clicked)
         recent_layout.addWidget(self._list_widget, stretch=1)
 
-        self._select_btn = QPushButton("Load Workspace")
+        self._select_btn = QPushButton(tr("proj.load_btn"))
         self._select_btn.clicked.connect(self._on_load_clicked)
         recent_layout.addWidget(self._select_btn)
 
@@ -160,4 +161,4 @@ class ProjectsView(QFrame):
 
     @Slot(str)
     def _on_active_changed(self, name: str) -> None:
-        self._status_lbl.setText(f"Active Workspace: {name}")
+        self._status_lbl.setText(tr("proj.active_ws").format(name))

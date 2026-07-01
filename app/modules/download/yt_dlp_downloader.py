@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 import yt_dlp
+import imageio_ffmpeg
 from loguru import logger
 
 from app.core.exceptions import ServiceError
@@ -131,6 +132,8 @@ class YtDlpDownloader(BaseDownloader):
             "progress_hooks": [ytdl_progress_hook],
             "quiet": True,
             "no_warnings": True,
+            "ffmpeg_location": imageio_ffmpeg.get_ffmpeg_exe(),
+            "noplaylist": True,
         }
 
         # Resolve format configurations based on user options

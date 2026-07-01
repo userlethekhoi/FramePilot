@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
 )
 from loguru import logger
 from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
+from app.infrastructure.config.translation import tr
 
 
 class SpeechToTextView(QFrame):
@@ -31,7 +32,7 @@ class SpeechToTextView(QFrame):
         self._layout.setSpacing(16)
 
         # Header Title
-        self._title = QLabel("AI Subtitles & Voice Synthesis Dubbing")
+        self._title = QLabel(tr("stt.title"))
         self._title.setStyleSheet("font-size: 20px; font-weight: bold;")
         self._layout.addWidget(self._title)
 
@@ -68,7 +69,7 @@ class SpeechToTextView(QFrame):
         file_layout.setContentsMargins(0, 0, 0, 0)
         file_layout.setSpacing(12)
 
-        file_label = QLabel("Media File:")
+        file_label = QLabel(tr("stt.file_lbl"))
         file_layout.addWidget(file_label)
 
         self._media_path_input = QLineEdit()
@@ -86,7 +87,7 @@ class SpeechToTextView(QFrame):
         opt_layout.setContentsMargins(0, 0, 0, 0)
         opt_layout.setSpacing(16)
 
-        prov_label = QLabel("Provider:")
+        prov_label = QLabel(tr("stt.provider_lbl"))
         opt_layout.addWidget(prov_label)
 
         self._transcribe_prov_combo = QComboBox()
@@ -97,7 +98,7 @@ class SpeechToTextView(QFrame):
         self._transcribe_prov_combo.currentIndexChanged.connect(self._on_transcribe_provider_changed)
         opt_layout.addWidget(self._transcribe_prov_combo)
 
-        self._model_label = QLabel("Model Size:")
+        self._model_label = QLabel(tr("stt.model_lbl"))
         opt_layout.addWidget(self._model_label)
 
         self._model_combo = QComboBox()
@@ -105,7 +106,7 @@ class SpeechToTextView(QFrame):
         self._model_combo.setCurrentText("base")
         opt_layout.addWidget(self._model_combo)
 
-        lang_label = QLabel("Language:")
+        lang_label = QLabel(tr("stt.lang_lbl"))
         opt_layout.addWidget(lang_label)
 
         self._transcribe_lang_combo = QComboBox()
@@ -130,7 +131,7 @@ class SpeechToTextView(QFrame):
         action_layout.setContentsMargins(0, 0, 0, 0)
         action_layout.setSpacing(16)
 
-        self._transcribe_btn = QPushButton("Start Transcription")
+        self._transcribe_btn = QPushButton(tr("stt.btn"))
         self._transcribe_btn.setObjectName("primaryButton")
         self._transcribe_btn.clicked.connect(self._on_transcribe_clicked)
         action_layout.addWidget(self._transcribe_btn)
@@ -176,7 +177,7 @@ class SpeechToTextView(QFrame):
         file_layout.setContentsMargins(0, 0, 0, 0)
         file_layout.setSpacing(12)
 
-        file_label = QLabel("Subtitle File:")
+        file_label = QLabel(tr("stt.sub_lbl"))
         file_layout.addWidget(file_label)
 
         self._sub_path_input = QLineEdit()
@@ -194,7 +195,7 @@ class SpeechToTextView(QFrame):
         trans_layout.setContentsMargins(0, 0, 0, 0)
         trans_layout.setSpacing(16)
 
-        trans_prov_label = QLabel("Translator:")
+        trans_prov_label = QLabel(tr("stt.trans_lbl"))
         trans_layout.addWidget(trans_prov_label)
 
         self._trans_prov_combo = QComboBox()
@@ -204,7 +205,7 @@ class SpeechToTextView(QFrame):
         ])
         trans_layout.addWidget(self._trans_prov_combo)
 
-        target_lang_label = QLabel("Target Language:")
+        target_lang_label = QLabel(tr("stt.target_lang_lbl"))
         trans_layout.addWidget(target_lang_label)
 
         self._target_lang_combo = QComboBox()
@@ -212,7 +213,7 @@ class SpeechToTextView(QFrame):
         self._target_lang_combo.setCurrentText("vi")
         trans_layout.addWidget(self._target_lang_combo)
 
-        self._translate_btn = QPushButton("Translate Subtitles")
+        self._translate_btn = QPushButton(tr("stt.trans_btn"))
         self._translate_btn.clicked.connect(self._on_translate_clicked)
         trans_layout.addWidget(self._translate_btn)
 
@@ -225,7 +226,7 @@ class SpeechToTextView(QFrame):
         tts_layout.setContentsMargins(0, 0, 0, 0)
         tts_layout.setSpacing(16)
 
-        tts_prov_label = QLabel("TTS Engine:")
+        tts_prov_label = QLabel(tr("stt.tts_lbl"))
         tts_layout.addWidget(tts_prov_label)
 
         self._tts_prov_combo = QComboBox()
@@ -236,7 +237,7 @@ class SpeechToTextView(QFrame):
         self._tts_prov_combo.currentIndexChanged.connect(self._on_tts_provider_changed)
         tts_layout.addWidget(self._tts_prov_combo)
 
-        self._voice_label = QLabel("Voice:")
+        self._voice_label = QLabel(tr("stt.voice_lbl"))
         tts_layout.addWidget(self._voice_label)
 
         self._voice_combo = QComboBox()
@@ -244,7 +245,7 @@ class SpeechToTextView(QFrame):
         self._voice_combo.setCurrentText("alloy")
         tts_layout.addWidget(self._voice_combo)
 
-        self._dub_btn = QPushButton("Synthesize Dubbing")
+        self._dub_btn = QPushButton(tr("stt.dub_btn"))
         self._dub_btn.setObjectName("primaryButton")
         self._dub_btn.clicked.connect(self._on_dub_clicked)
         tts_layout.addWidget(self._dub_btn)
@@ -291,7 +292,7 @@ class SpeechToTextView(QFrame):
             self,
             "Select Audio/Video file",
             "",
-            "Media Files (*.mp3 *.wav *.mp4 *.mkv *.avi *.mov);;All Files (*)",
+            "Media Files (*.mp3 *.wav *.mp4 *.mkv *.avi *.mov *.webm);;All Files (*)",
         )
         if file_path:
             self._media_path_input.setText(file_path)

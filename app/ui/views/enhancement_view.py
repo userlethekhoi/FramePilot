@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
 )
 from loguru import logger
 from app.ui.viewmodels.enhancement_viewmodel import EnhancementViewModel
+from app.infrastructure.config.translation import tr
 
 
 class EnhancementView(QFrame):
@@ -31,7 +32,7 @@ class EnhancementView(QFrame):
         self._layout.setSpacing(20)
 
         # Header Title
-        self._title = QLabel("AI Media Quality Enhancement Center")
+        self._title = QLabel(tr("enh.title"))
         self._title.setStyleSheet("font-size: 20px; font-weight: bold;")
         self._layout.addWidget(self._title)
 
@@ -58,7 +59,7 @@ class EnhancementView(QFrame):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(12)
 
-        file_label = QLabel("Source Media:")
+        file_label = QLabel(tr("enh.file_lbl"))
         layout.addWidget(file_label)
 
         self._path_input = QLineEdit()
@@ -82,7 +83,7 @@ class EnhancementView(QFrame):
         sel_layout = QHBoxLayout(sel_container)
         sel_layout.setContentsMargins(0, 0, 0, 0)
         
-        filter_label = QLabel("Select Filter:")
+        filter_label = QLabel(tr("enh.type_lbl"))
         sel_layout.addWidget(filter_label)
 
         self._filter_combo = QComboBox()
@@ -185,7 +186,7 @@ class EnhancementView(QFrame):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(16)
 
-        self._enhance_btn = QPushButton("Run Quality Enhancement")
+        self._enhance_btn = QPushButton(tr("enh.btn"))
         self._enhance_btn.setObjectName("primaryButton")
         self._enhance_btn.clicked.connect(self._on_enhance_clicked)
         layout.addWidget(self._enhance_btn)
@@ -222,7 +223,7 @@ class EnhancementView(QFrame):
             self,
             "Select Video/Image source file",
             "",
-            "Media Files (*.mp4 *.mkv *.png *.jpg *.jpeg *.avi *.mov);;All Files (*)",
+            "Media Files (*.mp4 *.mkv *.png *.jpg *.jpeg *.avi *.mov *.webm);;All Files (*)",
         )
         if file_path:
             self._path_input.setText(file_path)

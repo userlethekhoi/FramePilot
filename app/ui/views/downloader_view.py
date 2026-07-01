@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.ui.viewmodels.downloader_viewmodel import DownloaderViewModel
+from app.infrastructure.config.translation import tr
 
 
 class ActiveDownloadRow(QFrame):
@@ -91,7 +92,7 @@ class DownloaderView(QFrame):
         self._layout.setSpacing(20)
 
         # Header Title
-        self._title = QLabel("Video Downloader")
+        self._title = QLabel(tr("dl.title"))
         self._title.setStyleSheet("font-size: 20px; font-weight: bold;")
         self._layout.addWidget(self._title)
 
@@ -117,10 +118,10 @@ class DownloaderView(QFrame):
         input_layout.setSpacing(12)
 
         self._url_input = QLineEdit()
-        self._url_input.setPlaceholderText("Paste YouTube, TikTok, Facebook or Vimeo URL here...")
+        self._url_input.setPlaceholderText(tr("dl.url_lbl"))
         input_layout.addWidget(self._url_input, stretch=1)
 
-        self._download_btn = QPushButton("Download")
+        self._download_btn = QPushButton(tr("dl.start_btn"))
         self._download_btn.setObjectName("primaryButton")
         self._download_btn.clicked.connect(self._on_download_btn_clicked)
         input_layout.addWidget(self._download_btn)
@@ -135,7 +136,7 @@ class DownloaderView(QFrame):
         options_layout.setSpacing(16)
 
         # Format choice dropdown
-        format_label = QLabel("Format Preset:")
+        format_label = QLabel(tr("dl.format_lbl"))
         options_layout.addWidget(format_label)
 
         self._format_combo = QComboBox()
@@ -154,7 +155,7 @@ class DownloaderView(QFrame):
 
     def _setup_queue_view(self) -> None:
         """Sets up the scroll panel to list running downloads."""
-        queue_label = QLabel("Active Download Queue")
+        queue_label = QLabel(tr("dl.queue_lbl"))
         queue_label.setStyleSheet("font-size: 14px; font-weight: bold; margin-top: 10px;")
         self._layout.addWidget(queue_label)
 
