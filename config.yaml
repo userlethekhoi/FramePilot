@@ -1,0 +1,46 @@
+# MediaFlow AI Default System Configuration
+
+app:
+  name: "MediaFlow AI"
+  version: "0.1.0"
+  env: "development" # development, production
+
+database:
+  url: "sqlite+aiosqlite:///mediaflow.db"
+  echo: false
+
+logging:
+  level: "INFO" # DEBUG, INFO, WARNING, ERROR
+  file: "logs/app.log"
+  rotation: "10 MB"
+  retention: "1 month"
+  compression: "zip"
+
+paths:
+  storage_dir: "storage"
+  assets_dir: "storage/assets"
+  projects_dir: "storage/projects"
+  cache_dir: "storage/cache"
+  plugins_dir: "plugins"
+
+theme:
+  mode: "dark" # dark, light, custom
+  accent: "slate" # slate, blue, emerald
+  font_family: "Segoe UI"
+  font_size: 10
+  border_radius: 8
+
+performance:
+  gpu_acceleration: true
+  max_worker_threads: 4
+  ffmpeg_path: "" # Auto-detected if empty
+
+network:
+  proxy:
+    enabled: false
+    http: ""
+    https: ""
+  timeout: 30
+
+security:
+  encrypt_keys: true
