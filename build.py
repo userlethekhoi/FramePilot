@@ -36,6 +36,14 @@ def compile_app() -> None:
         "--windowed",  # Windowed mode for production deployment
         f"--name=FramePilot",
         "--collect-binaries=imageio_ffmpeg",
+        "--collect-data=whisper",
+        "--collect-all=tiktoken",
+        "--copy-metadata=tqdm",
+        "--copy-metadata=regex",
+        "--copy-metadata=requests",
+        "--copy-metadata=packaging",
+        "--copy-metadata=filelock",
+        "--copy-metadata=numpy",
         # Add static resources
         f"--add-data={root_dir / 'config.yaml'}{os.pathsep}.",
         f"--add-data={root_dir / 'app' / 'ui' / 'themes'}{os.pathsep}app/ui/themes",

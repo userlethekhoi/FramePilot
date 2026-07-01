@@ -60,10 +60,16 @@ class LocalWhisperSpeechToTextProvider(BaseSpeechToTextProvider):
             logger.info("Loading local Whisper model '{}'...", model_name)
             model = whisper.load_model(model_name)
 
+            import imageio_ffmpeg
+            ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
+            ffmpeg_dir = os.path.dirname(ffmpeg_path)
+            if ffmpeg_dir not in os.environ.get("PATH", ""):
+                os.environ["PATH"] = f"{ffmpeg_dir}{os.pathsep}{os.environ.get('PATH', '')}"
+
             if progress_callback:
                 progress_callback(50.0)
 
-            logger.info("Transcribing audio file with Whisper model...")
+            logger.info("Transcribing audio file with Whisper model using ffmpeg at {}...", ffmpeg_dir)
             # Transcribe
             result = model.transcribe(audio_path, language=options.get("language"))
 
