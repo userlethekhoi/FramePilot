@@ -15,7 +15,7 @@ def test_job_queue_success(qtbot: Any) -> None:
     assert manager.max_thread_count == 2
 
     job_id = "job_test_123"
-    events = []
+    events: list[Any] = []
 
     def workload(progress_fn: Any) -> dict[str, Any]:
         progress_fn("step_1", 25.0)
@@ -62,7 +62,7 @@ def test_job_queue_failure(qtbot: Any) -> None:
     """Verifies that exceptions thrown inside workloads trigger the failed signal callback."""
     manager = JobQueueManager(max_threads=1)
     job_id = "job_test_fail"
-    events = []
+    events: list[Any] = []
 
     def faulty_workload(progress_fn: Any) -> dict[str, Any]:
         raise ValueError("Something went wrong during rendering.")
@@ -88,7 +88,7 @@ def test_job_queue_cancel(qtbot: Any) -> None:
     """Verifies that running jobs can be cancelled mid-execution."""
     manager = JobQueueManager(max_threads=1)
     job_id = "job_test_cancel"
-    events = []
+    events: list[Any] = []
 
     def slow_workload(progress_fn: Any) -> dict[str, Any]:
         # Perform steps checking loop

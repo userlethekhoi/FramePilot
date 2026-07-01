@@ -55,6 +55,7 @@ async def test_asset_repository(db_engine: DatabaseEngine) -> None:
 
     # Create dummy project
     project = await proj_repo.save(Project(name="Proj", path="/p"))
+    assert project.id is not None
 
     # 1. Save Asset
     asset = Asset(
@@ -93,6 +94,7 @@ async def test_job_repository(db_engine: DatabaseEngine) -> None:
 
     # Create dummy project
     project = await proj_repo.save(Project(name="Proj", path="/p"))
+    assert project.id is not None
 
     # 1. Save Job with Steps
     step1 = JobStep(step_type="download", status="COMPLETED", progress=100.0)

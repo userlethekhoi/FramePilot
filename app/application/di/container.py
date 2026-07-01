@@ -28,12 +28,12 @@ class Container:
             self._lock = Lock()
             self._initialized = True
 
-    def register_singleton(self, interface_cls: type[T], instance: T) -> None:
+    def register_singleton(self, interface_cls: type[Any], instance: Any) -> None:
         """Registers a concrete singleton instance for a given interface type."""
         with self._lock:
             self._services[interface_cls] = instance
 
-    def register_factory(self, interface_cls: type[T], factory_func: Callable[[], T]) -> None:
+    def register_factory(self, interface_cls: type[Any], factory_func: Callable[[], Any]) -> None:
         """Registers a dynamic factory function for a given interface type."""
         with self._lock:
             self._factories[interface_cls] = factory_func

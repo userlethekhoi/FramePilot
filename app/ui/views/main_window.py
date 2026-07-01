@@ -1,3 +1,4 @@
+
 from loguru import logger
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import (
@@ -11,7 +12,10 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from app.application.di.container import Container
 from app.ui.themes.engine import ThemeEngine
+from app.ui.viewmodels.downloader_viewmodel import DownloaderViewModel
+from app.ui.views.downloader_view import DownloaderView
 
 
 class NavigationSidebar(QFrame):
@@ -67,9 +71,10 @@ class NavigationSidebar(QFrame):
 class MainWindow(QMainWindow):
     """Main window of the MediaFlow AI application, coordinating MVVM navigation and theme engine."""
 
-    def __init__(self, theme_engine: ThemeEngine) -> None:
+    def __init__(self, container: Container) -> None:
         super().__init__()
-        self._theme = theme_engine
+        self._container = container
+        self._theme = container.resolve(ThemeEngine)
         self.setWindowTitle("MediaFlow AI")
         self.resize(1200, 800)
 
@@ -104,7 +109,8 @@ class MainWindow(QMainWindow):
         self._content_stack.addWidget(self._projects_page)
 
         # Page 1: Video/Image Downloader
-        self._downloader_page = self._create_page("Downloader Module (URLs, Playlists, Resolution)")
+        downloader_vm = self._container.resolve(DownloaderViewModel)
+        self._downloader_page = DownloaderView(downloader_vm)
         self._content_stack.addWidget(self._downloader_page)
 
         # Page 2: Transcribe / Translation

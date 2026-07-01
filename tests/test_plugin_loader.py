@@ -2,6 +2,7 @@ import json
 import tempfile
 from collections.abc import Generator
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -74,7 +75,7 @@ class DummyTestPlugin(BasePlugin):
     assert plugin_id in loaded_plugins
     assert loaded_plugins[plugin_id]["name"] == "Dummy Plugin"
 
-    plugin_instance = manager.get_plugin(plugin_id)
+    plugin_instance: Any = manager.get_plugin(plugin_id)
     assert plugin_instance is not None
     assert plugin_instance.initialized is True
     assert plugin_instance.context is context

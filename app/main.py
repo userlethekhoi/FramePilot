@@ -5,11 +5,28 @@ from loguru import logger
 from PySide6.QtWidgets import QApplication
 
 from app.application.di.container import Container
+from app.application.services.download_service import DownloadService
+from app.application.services.job_queue import JobQueueManager
+from app.core.interfaces.downloader import BaseDownloader
+from app.core.interfaces.repository import (
+    AssetRepository,
+    JobRepository,
+    PresetRepository,
+    ProjectRepository,
+)
 from app.infrastructure.config.settings import SettingsManager
 from app.infrastructure.database.connection import DatabaseEngine
 from app.infrastructure.database.models import Base
+from app.infrastructure.database.repositories import (
+    SqlAlchemyAssetRepository,
+    SqlAlchemyJobRepository,
+    SqlAlchemyPresetRepository,
+    SqlAlchemyProjectRepository,
+)
 from app.infrastructure.logging_config import setup_logging
+from app.modules.download.yt_dlp_downloader import YtDlpDownloader
 from app.ui.themes.engine import ThemeEngine
+from app.ui.viewmodels.downloader_viewmodel import DownloaderViewModel
 from app.ui.views.main_window import MainWindow
 
 
@@ -50,9 +67,19 @@ def main() -> None:
     )
     logger.info("Starting MediaFlow AI bootstrap...")
 
-    # 4. Configure Database engine
+    # 4. Configure Database engine and repositories
     db_engine = DatabaseEngine(settings_manager)
     container.register_singleton(DatabaseEngine, db_engine)
+
+    project_repo = SqlAlchemyProjectRepository(db_engine)
+    asset_repo = SqlAlchemyAssetRepository(db_engine)
+    job_repo = SqlAlchemyJobRepository(db_engine)
+    preset_repo = SqlAlchemyPresetRepository(db_engine)
+
+    container.register_singleton(ProjectRepository, project_repo)
+    container.register_singleton(AssetRepository, asset_repo)
+    container.register_singleton(JobRepository, job_repo)
+    container.register_singleton(PresetRepository, preset_repo)
 
     # Sync run schema migration before GUI initializes
     try:
@@ -60,6 +87,23 @@ def main() -> None:
     except Exception as e:
         logger.exception("Database migration failed at startup: {}", e)
         sys.exit(1)
+
+    # Setup thread pool job queue manager
+    max_threads = settings_manager.get("performance.max_worker_threads", 4)
+    job_queue = JobQueueManager(max_threads)
+    container.register_singleton(JobQueueManager, job_queue)
+
+    # Register Downloader components
+    downloader = YtDlpDownloader()
+    container.register_singleton(BaseDownloader, downloader)
+
+    download_service = DownloadService(
+        downloader, asset_repo, job_repo, job_queue, settings_manager
+    )
+    container.register_singleton(DownloadService, download_service)
+
+    downloader_viewmodel = DownloaderViewModel(download_service, job_queue)
+    container.register_singleton(DownloaderViewModel, downloader_viewmodel)
 
     # 5. Initialize UI Theme engine
     theme_mode = settings_manager.get("theme.mode", "dark")
@@ -71,8 +115,8 @@ def main() -> None:
     app.setApplicationName(settings_manager.get("app.name", "MediaFlow AI"))
     app.setApplicationVersion(settings_manager.get("app.version", "0.1.0"))
 
-    # Create & display main window
-    main_window = MainWindow(theme_engine)
+    # Create & display main window passing DI container
+    main_window = MainWindow(container)
     main_window.show()
 
     logger.info("Bootstrap complete. Launching GUI main event loop.")

@@ -49,7 +49,7 @@ def test_invalid_type_resolution_raises_error() -> None:
     container.clear()
 
     # Registering instance that is not subclasses of registration key
-    container.register_singleton(DummyService, UnrelatedClass())  # type: ignore
+    container.register_singleton(DummyService, UnrelatedClass())
 
     with pytest.raises(DependencyError):
         container.resolve(DummyService)

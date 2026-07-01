@@ -5,6 +5,7 @@ loguru>=0.7.2
 cryptography>=42.0.0
 keyring>=24.3.0
 aiosqlite>=0.19.0
+yt-dlp>=2025.2.19
 
 # Dev Dependencies
 pytest>=8.0.0
