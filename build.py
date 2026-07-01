@@ -32,7 +32,7 @@ def compile_app() -> None:
         "--noconfirm",
         "--onedir",
         "--windowed",
-        f"--name=MediaFlowAI",
+        f"--name=FramePilot",
         # Add static resources
         f"--add-data={root_dir / 'config.yaml'}{os.pathsep}.",
         f"--add-data={root_dir / 'app' / 'ui' / 'themes'}{os.pathsep}app/ui/themes",
@@ -46,7 +46,7 @@ def compile_app() -> None:
         subprocess.run(cmd, check=True)
         print("\n=== SUCCESS ===")
         print("Application packaged successfully!")
-        print(f"Executable folder exported to: {root_dir / 'dist' / 'MediaFlowAI'}")
+        print(f"Executable folder exported to: {root_dir / 'dist' / 'FramePilot'}")
     except subprocess.CalledProcessError as e:
         print(f"\n=== FAILURE ===")
         print(f"PyInstaller execution failed with code: {e.returncode}")
