@@ -41,14 +41,15 @@ def setup_logging(
     )
 
     # Console Handler (Stdout)
-    logger.add(
-        sys.stdout,
-        format=log_format,
-        level=log_level,
-        colorize=True,
-        backtrace=True,
-        diagnose=True,
-    )
+    if sys.stdout is not None:
+        logger.add(
+            sys.stdout,
+            format=log_format,
+            level=log_level,
+            colorize=True,
+            backtrace=True,
+            diagnose=True,
+        )
 
     # File Handler
     try:
