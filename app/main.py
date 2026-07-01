@@ -33,6 +33,9 @@ from app.modules.translation.translator_hub import TranslatorHub
 from app.application.services.translation_service import TranslationService
 from app.modules.tts.tts_hub import TextToSpeechHub
 from app.application.services.tts_service import TextToSpeechService
+from app.modules.enhancement.enhancement_hub import EnhancementHub
+from app.application.services.enhancement_service import EnhancementService
+from app.ui.viewmodels.enhancement_viewmodel import EnhancementViewModel
 from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.ui.views.main_window import MainWindow
 
@@ -139,6 +142,18 @@ def main() -> None:
 
     stt_viewmodel = SpeechToTextViewModel(stt_service, translation_service, tts_service)
     container.register_singleton(SpeechToTextViewModel, stt_viewmodel)
+
+    # Register Enhancement components
+    enhancement_hub = EnhancementHub()
+    container.register_singleton(EnhancementHub, enhancement_hub)
+
+    enhancement_service = EnhancementService(
+        enhancement_hub, asset_repo, job_repo, job_queue, settings_manager
+    )
+    container.register_singleton(EnhancementService, enhancement_service)
+
+    enhancement_viewmodel = EnhancementViewModel(enhancement_service)
+    container.register_singleton(EnhancementViewModel, enhancement_viewmodel)
 
     # 5. Initialize UI Theme engine
     theme_mode = settings_manager.get("theme.mode", "dark")
