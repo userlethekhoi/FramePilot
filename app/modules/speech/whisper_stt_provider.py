@@ -61,8 +61,24 @@ class LocalWhisperSpeechToTextProvider(BaseSpeechToTextProvider):
             model = whisper.load_model(model_name)
 
             import imageio_ffmpeg
+            import shutil
+            import tempfile
+            
             ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
-            ffmpeg_dir = os.path.dirname(ffmpeg_path)
+            
+            if os.path.basename(ffmpeg_path).lower() != "ffmpeg.exe":
+                wrapper_dir = os.path.join(tempfile.gettempdir(), "framepilot_ffmpeg")
+                os.makedirs(wrapper_dir, exist_ok=True)
+                target_exe = os.path.join(wrapper_dir, "ffmpeg.exe")
+                if not os.path.exists(target_exe):
+                    try:
+                        shutil.copy2(ffmpeg_path, target_exe)
+                    except Exception as copy_err:
+                        logger.warning("Failed to copy ffmpeg: {}", copy_err)
+                ffmpeg_dir = wrapper_dir
+            else:
+                ffmpeg_dir = os.path.dirname(ffmpeg_path)
+
             if ffmpeg_dir not in os.environ.get("PATH", ""):
                 os.environ["PATH"] = f"{ffmpeg_dir}{os.pathsep}{os.environ.get('PATH', '')}"
 
