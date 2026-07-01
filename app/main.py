@@ -27,6 +27,9 @@ from app.infrastructure.logging_config import setup_logging
 from app.modules.download.yt_dlp_downloader import YtDlpDownloader
 from app.ui.themes.engine import ThemeEngine
 from app.ui.viewmodels.downloader_viewmodel import DownloaderViewModel
+from app.modules.speech.provider_hub import SpeechProviderHub
+from app.application.services.stt_service import SpeechToTextService
+from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.ui.views.main_window import MainWindow
 
 
@@ -104,6 +107,18 @@ def main() -> None:
 
     downloader_viewmodel = DownloaderViewModel(download_service, job_queue)
     container.register_singleton(DownloaderViewModel, downloader_viewmodel)
+
+    # Register Speech Recognition components
+    stt_hub = SpeechProviderHub()
+    container.register_singleton(SpeechProviderHub, stt_hub)
+
+    stt_service = SpeechToTextService(
+        stt_hub, asset_repo, job_repo, job_queue, settings_manager
+    )
+    container.register_singleton(SpeechToTextService, stt_service)
+
+    stt_viewmodel = SpeechToTextViewModel(stt_service)
+    container.register_singleton(SpeechToTextViewModel, stt_viewmodel)
 
     # 5. Initialize UI Theme engine
     theme_mode = settings_manager.get("theme.mode", "dark")

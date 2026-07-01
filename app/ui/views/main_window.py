@@ -15,7 +15,9 @@ from PySide6.QtWidgets import (
 from app.application.di.container import Container
 from app.ui.themes.engine import ThemeEngine
 from app.ui.viewmodels.downloader_viewmodel import DownloaderViewModel
+from app.ui.viewmodels.stt_viewmodel import SpeechToTextViewModel
 from app.ui.views.downloader_view import DownloaderView
+from app.ui.views.stt_view import SpeechToTextView
 
 
 class NavigationSidebar(QFrame):
@@ -114,7 +116,8 @@ class MainWindow(QMainWindow):
         self._content_stack.addWidget(self._downloader_page)
 
         # Page 2: Transcribe / Translation
-        self._transcribe_page = self._create_page("Speech-to-Text & Subtitle Editor")
+        stt_vm = self._container.resolve(SpeechToTextViewModel)
+        self._transcribe_page = SpeechToTextView(stt_vm)
         self._content_stack.addWidget(self._transcribe_page)
 
         # Page 3: Enhancement center
